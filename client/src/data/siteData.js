@@ -3,8 +3,8 @@ export const SITE = {
   tagline: 'Connecting Businesses Worldwide',
   phone: '+94 77 335 1122',
   whatsapp: '94773351122',
-  email: 'info@agroupwebsolution.com',
-  address: 'Colombo, Sri Lanka',
+  email: 'mmabdulrahman57@gmail.com',
+  address: 'Gampaha, Sri Lanka',
   mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.62208015947!2d79.861243!3d6.927079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2593cf65a1e9d%3A0xe13da4b400e2da38!2sColombo!5e0!3m2!1sen!2slk!4v1700000000000',
   social: {
     facebook: 'https://facebook.com',
@@ -147,7 +147,7 @@ export const TESTIMONIALS = [
 export const PRICING = [
   {
     name: 'Starter',
-    price: '$299',
+    price: 'LKR 25,000',
     period: 'one-time',
     desc: 'Perfect for small businesses getting started online.',
     features: [
@@ -164,7 +164,7 @@ export const PRICING = [
   },
   {
     name: 'Professional',
-    price: '$599',
+    price: 'LKR 50,000',
     period: 'one-time',
     desc: 'Best for growing businesses that need more features.',
     features: [
@@ -182,7 +182,7 @@ export const PRICING = [
   },
   {
     name: 'Premium',
-    price: '$999',
+    price: 'LKR 75,000',
     period: 'one-time',
     desc: 'Full e-commerce solution for online selling.',
     features: [
@@ -207,7 +207,7 @@ export const FAQS = [
   },
   {
     q: 'How much does a website cost?',
-    a: 'Our Starter package begins at $299 for a basic business website. Professional and Premium packages offer more features. Contact us for a custom quote tailored to your needs.',
+    a: 'Our Starter package begins at LKR 25,000 for a basic business website. Professional and Premium packages offer more features. Contact us for a custom quote tailored to your needs.',
   },
   {
     q: 'Do you provide hosting?',
@@ -258,9 +258,9 @@ export const WEBSITE_TYPES = [
 ]
 
 export const BUDGET_OPTIONS = [
-  'Under $300',
-  '$300 - $600',
-  '$600 - $1000',
+  'Under LKR 25,000',
+  'LKR 25,000 - LKR 50,000',
+  'LKR 50,000 - LKR 75,000',
   'Over $1000',
   'Not Sure Yet',
 ]

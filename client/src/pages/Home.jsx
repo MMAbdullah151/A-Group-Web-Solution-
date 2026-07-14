@@ -49,7 +49,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="mt-10 flex flex-wrap justify-center gap-6 lg:justify-start">
-              {['50+ Projects', '100% Responsive', '24/7 Support'].map((stat) => (
+              {['0+ Projects', '100% Responsive', '24/7 Support'].map((stat) => (
                 <div key={stat} className="text-center lg:text-left">
                   <p className="text-lg font-bold text-secondary">{stat.split(' ')[0]}</p>
                   <p className="text-sm text-gray-400">{stat.split(' ').slice(1).join(' ')}</p>
