@@ -45,7 +45,7 @@ export default function About() {
               className="rounded-2xl shadow-xl"
             />
             <div className="absolute -bottom-6 -left-6 rounded-xl bg-primary p-6 text-white shadow-xl">
-              <p className="text-3xl font-bold text-secondary">5+</p>
+              <p className="text-3xl font-bold text-secondary">0+</p>
               <p className="text-sm text-gray-300">Years of Experience</p>
             </div>
           </div>
