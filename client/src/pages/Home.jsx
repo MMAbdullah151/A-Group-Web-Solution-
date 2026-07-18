@@ -3,11 +3,14 @@ import { ArrowRight, Check } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import SectionHeading, { CTASection, StarRating } from '../components/SectionHeading'
 import ServiceCard from '../components/ServiceCard'
+import PortfolioCard from '../components/PortfolioCard'
 import {
-  SERVICES,
+  CURRENT_SERVICES,
+  COMING_SOON_SERVICES,
   WHY_CHOOSE_US,
   PROCESS_STEPS,
-  PORTFOLIO,
+  CURRENT_PORTFOLIO,
+  COMING_SOON_PORTFOLIO,
   TESTIMONIALS,
 } from '../data/siteData'
 
@@ -96,14 +99,24 @@ export default function Home() {
       <section className="section-padding bg-section">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            tag="Our Services"
-            title="Everything You Need to Succeed Online"
-            subtitle="From simple business websites to full online stores, we have the perfect solution for you."
+            tag="Our Current Services"
+            title="Professional Web Solutions for Your Business"
+            subtitle="We currently specialize in Business Website Development, Website Maintenance, and Domain & Hosting Services — with more offerings coming soon."
           />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {SERVICES.map((service) => (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {CURRENT_SERVICES.map((service) => (
               <ServiceCard key={service.id} service={service} compact />
             ))}
+          </div>
+          <div className="mt-12">
+            <p className="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-amber-700">
+              Coming Soon
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {COMING_SOON_SERVICES.map((service) => (
+                <ServiceCard key={service.id} service={service} compact />
+              ))}
+            </div>
           </div>
           <div className="mt-10 text-center">
             <Link to="/services" className="btn-primary">
@@ -170,30 +183,19 @@ export default function Home() {
         <SectionHeading
           tag="Latest Projects"
           title="See Our Work in Action"
-          subtitle="Explore demo projects showcasing the types of websites we build."
+          subtitle="Explore sample business websites we build today, with more project types coming soon."
         />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PORTFOLIO.map((project) => (
-            <div
-              key={project.id}
-              className="card-hover group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                <span className="absolute bottom-3 left-3 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-primary">
-                  {project.type}
-                </span>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-primary">{project.title}</h3>
-                <p className="mt-1 text-sm text-gray-500">{project.category}</p>
-              </div>
-            </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {CURRENT_PORTFOLIO.map((project) => (
+            <PortfolioCard key={project.id} project={project} compact />
+          ))}
+        </div>
+        <p className="mb-4 mt-10 text-center text-sm font-semibold uppercase tracking-wide text-amber-700">
+          Coming Soon
+        </p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {COMING_SOON_PORTFOLIO.map((project) => (
+            <PortfolioCard key={project.id} project={project} compact />
           ))}
         </div>
         <div className="mt-10 text-center">
