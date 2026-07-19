@@ -190,7 +190,7 @@ export default function Home() {
             <PortfolioCard key={project.id} project={project} compact />
           ))}
         </div>
-        <p className="mb-4 mt-10 text-center text-sm font-semibold uppercase tracking-wide text-amber-700">
+        <p className="mb-4 mt-10 text-center text-3xl font-black tracking-tight text-amber-700">
           Coming Soon
         </p>
         <div className="grid gap-6 sm:grid-cols-2">
