@@ -114,7 +114,11 @@ export default function Home() {
              </p>
             <div className="mt-6 flex flex-wrap justify-center gap-4">
               {COMING_SOON_SERVICES.map((service) => (
-                <ServiceCard key={service.id} service={service} compact />
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  compact={service.id !== 'seo'}
+                />
               ))}
             </div>
           </div>

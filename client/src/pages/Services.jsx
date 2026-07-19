@@ -41,7 +41,11 @@ export default function Services() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {COMING_SOON_SERVICES.map((service) => (
-              <ServiceCard key={service.id} service={service} compact />
+              <ServiceCard
+                key={service.id}
+                service={service}
+                compact={service.id !== 'seo'}
+              />
             ))}
           </div>
         </div>
