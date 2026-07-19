@@ -61,6 +61,15 @@ export const SERVICES = [
   },
 ]
 
+export const CURRENT_SERVICES = SERVICES.filter(({ id }) => id !== 'seo')
+export const COMING_SOON_SERVICES = SERVICES.filter(({ id }) => id === 'seo')
+
+export const SERVICES_INTRO = {
+  tag: 'What We Do',
+  title: 'Professional Web Solutions',
+  subtitle: 'Quality website services for small businesses and online brands.',
+}
+
 export const WHY_CHOOSE_US = [
   { icon: 'DollarSign', title: 'Affordable Pricing', desc: 'Quality websites at prices that fit your budget.' },
   { icon: 'Smartphone', title: 'Mobile Friendly', desc: 'Perfect experience on phones, tablets, and desktops.' },
@@ -117,6 +126,15 @@ export const PORTFOLIO = [
   },
 ]
 
+export const CURRENT_PORTFOLIO = PORTFOLIO.slice(0, 2)
+export const COMING_SOON_PORTFOLIO = PORTFOLIO.slice(2)
+
+export const PORTFOLIO_INTRO = {
+  tag: 'Our Work',
+  title: 'Explore Our Projects',
+  subtitle: 'A selection of business websites we have built for clients.',
+}
+
 export const TESTIMONIALS = [
   {
     name: 'Sarah Mitchell',
@@ -147,7 +165,7 @@ export const TESTIMONIALS = [
 export const PRICING = [
   {
     name: 'Starter',
-    price: 'LKR 25,000',
+    price: 'LKR 10,000',
     period: 'one-time',
     desc: 'Perfect for small businesses getting started online.',
     features: [
@@ -164,7 +182,7 @@ export const PRICING = [
   },
   {
     name: 'Professional',
-    price: 'LKR 50,000',
+    price: 'LKR 20,000',
     period: 'one-time',
     desc: 'Best for growing businesses that need more features.',
     features: [
@@ -182,7 +200,7 @@ export const PRICING = [
   },
   {
     name: 'Premium',
-    price: 'LKR 75,000',
+    price: 'LKR 30,000',
     period: 'one-time',
     desc: 'Full e-commerce solution for online selling.',
     features: [
