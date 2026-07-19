@@ -109,7 +109,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-12">
-            <p className="mb-6 text-center text-sm font-semibold uppercase tracking-[0.3em] text-amber-700">
+            <p className="mb-6 text-center text-sm font-bold uppercase tracking-[0.5em] text-amber-700 color:blue">
               Coming Soon
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-4">
