@@ -206,7 +206,6 @@ export default function Home() {
         </div>
       </section>
 
-
       <CTASection
         title="Ready to Grow Your Business Online?"
         subtitle="Get a free quote today and let's build something amazing together."

@@ -61,6 +61,15 @@ export const SERVICES = [
   },
 ]
 
+export const CURRENT_SERVICES = SERVICES.filter(({ id }) => id !== 'seo')
+export const COMING_SOON_SERVICES = SERVICES.filter(({ id }) => id === 'seo')
+
+export const SERVICES_INTRO = {
+  tag: 'What We Do',
+  title: 'Professional Web Solutions for Your Business',
+  subtitle: 'We build modern, responsive websites that help companies grow online and connect with customers more effectively.',
+}
+
 export const WHY_CHOOSE_US = [
   { icon: 'DollarSign', title: 'Affordable Pricing', desc: 'Quality websites at prices that fit your budget.' },
   { icon: 'Smartphone', title: 'Mobile Friendly', desc: 'Perfect experience on phones, tablets, and desktops.' },
@@ -117,6 +126,41 @@ export const PORTFOLIO = [
   },
 ]
 
+export const CURRENT_PORTFOLIO = PORTFOLIO.slice(0, 2)
+export const COMING_SOON_PORTFOLIO = PORTFOLIO.slice(2)
+
+export const PORTFOLIO_INTRO = {
+  tag: 'Our Work',
+  title: 'A Glimpse of the Websites We Build',
+  subtitle: 'From restaurants to service businesses, we create modern websites that look great and help turn visitors into customers.',
+}
+
+export const TESTIMONIALS = [
+  {
+    name: 'Sarah Mitchell',
+    company: 'Bloom Cafe',
+    rating: 5,
+    text: 'A Group Web Solution built us a beautiful website that brought in so many new customers. Professional, fast, and affordable!',
+  },
+  {
+    name: 'James Rodriguez',
+    company: 'TechFix Pro',
+    rating: 5,
+    text: 'They understood exactly what we needed. Our new business website looks modern and works perfectly on mobile phones.',
+  },
+  {
+    name: 'Priya Sharma',
+    company: 'Style Boutique',
+    rating: 5,
+    text: 'Our online store is exactly what we wanted. Easy to manage and our customers love the shopping experience.',
+  },
+  {
+    name: 'Michael Chen',
+    company: 'BuildRight Construction',
+    rating: 5,
+    text: 'Great team, great communication, and an amazing final product. Highly recommend for any business website.',
+  },
+]
 
 export const PRICING = [
   {
