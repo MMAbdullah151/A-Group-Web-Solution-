@@ -99,6 +99,29 @@ export default function About() {
         </div>
       </section>
 
+      <section className="section-padding bg-section">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            tag="Our Team"
+            title="Meet the People Behind Your Website"
+            subtitle="A passionate team dedicated to bringing your vision to life."
+          />
+          <div className="grid gap-8 sm:grid-cols-3">
+            {TEAM.map((member) => (
+              <div key={member.name} className="text-center">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="mx-auto mb-4 h-32 w-32 rounded-full object-cover ring-4 ring-secondary/20"
+                />
+                <h3 className="font-bold text-primary">{member.name}</h3>
+                <p className="text-sm text-gray-500">{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CTASection
         title="Let's Work Together"
         subtitle="Ready to take your business online? We'd love to hear from you."
