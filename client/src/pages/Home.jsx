@@ -206,31 +206,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section-padding bg-section">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading
-            tag="Testimonials"
-            title="What Our Clients Say"
-            subtitle="Real feedback from businesses we've helped grow online."
-          />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {TESTIMONIALS.map((t) => (
-              <div
-                key={t.name}
-                className="card-hover rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
-              >
-                <StarRating rating={t.rating} />
-                <p className="mt-4 text-sm leading-relaxed text-gray-600">&ldquo;{t.text}&rdquo;</p>
-                <div className="mt-4 border-t border-gray-100 pt-4">
-                  <p className="font-semibold text-primary">{t.name}</p>
-                  <p className="text-sm text-gray-500">{t.company}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <CTASection
         title="Ready to Grow Your Business Online?"
