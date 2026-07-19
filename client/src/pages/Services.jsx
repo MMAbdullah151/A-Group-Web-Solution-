@@ -39,9 +39,9 @@ export default function Services() {
               subtitle="We're continuously expanding our services to provide complete digital solutions for your business."
             />
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 justify-items-center">
             {COMING_SOON_SERVICES.map((service) => (
-              <ServiceCard key={service.id} service={service} compact />
+              <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         </div>
