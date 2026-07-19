@@ -135,32 +135,6 @@ export const PORTFOLIO_INTRO = {
   subtitle: 'Explore the types of sites we build for businesses, with more project styles coming soon.',
 }
 
-export const TESTIMONIALS = [
-  {
-    name: 'Sarah Mitchell',
-    company: 'Bloom Cafe',
-    rating: 5,
-    text: 'A Group Web Solution built us a beautiful website that brought in so many new customers. Professional, fast, and affordable!'
-  },
-  {
-    name: 'James Rodriguez',
-    company: 'TechFix Pro',
-    rating: 5,
-    text: 'They understood exactly what we needed. Our new business website looks modern and works perfectly on mobile phones.'
-  },
-  {
-    name: 'Priya Sharma',
-    company: 'Style Boutique',
-    rating: 5,
-    text: 'Our online store is exactly what we wanted. Easy to manage and our customers love the shopping experience.'
-  },
-  {
-    name: 'Michael Chen',
-    company: 'BuildRight Construction',
-    rating: 5,
-    text: 'Great team, great communication, and an amazing final product. Highly recommend for any business website.'
-  },
-]
 
 export const PRICING = [
   {
