@@ -214,7 +214,7 @@ export const PRICING = [
       '6 Months Free Support',
     ],
     popular: false,
-    cta: 'Go Premium',
+    cta: 'Comming Soon',
   },
 ]
 
