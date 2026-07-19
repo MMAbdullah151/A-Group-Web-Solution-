@@ -27,7 +27,7 @@ export default function Services() {
       </section>
 
       <section className="section-padding bg-section">
-        <div className="mx-auto max-w-7xl centered">
+        <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col items-center gap-3 text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-sm font-semibold text-amber-800">
               <Rocket className="h-4 w-4" />
@@ -41,11 +41,7 @@ export default function Services() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {COMING_SOON_SERVICES.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                compact={service.id !== 'seo'}
-              />
+              <ServiceCard key={service.id} service={service} compact />
             ))}
           </div>
         </div>
