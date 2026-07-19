@@ -109,9 +109,9 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-12">
-            <p className="mb-6 text-center text-sm font-bold uppercase tracking-[0.5em] text-amber-700 color:blue">
-              Coming Soon
-            </p>
+             <p className="mb-4 mt-10 text-center text-3xl font-black tracking-tight text-amber-700">
+                Coming Soon
+             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-4">
               {COMING_SOON_SERVICES.map((service) => (
                 <ServiceCard key={service.id} service={service} compact />
@@ -190,9 +190,6 @@ export default function Home() {
             <PortfolioCard key={project.id} project={project} compact />
           ))}
         </div>
-        <p className="mb-4 mt-10 text-center text-3xl font-black tracking-tight text-amber-700">
-          Coming Soon
-        </p>
         <div className="grid gap-6 sm:grid-cols-2">
           {COMING_SOON_PORTFOLIO.map((project) => (
             <PortfolioCard key={project.id} project={project} compact />
