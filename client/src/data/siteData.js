@@ -26,109 +26,40 @@ export const NAV_LINKS = [
   { path: '/faq', label: 'FAQ' },
 ]
 
-export const CURRENT_SERVICES = [
+export const SERVICES = [
   {
     id: 'business',
-    title: 'Business Website Development',
-    icon: 'Globe',
-    shortDesc:
-      'Build a professional, responsive, and modern website that helps your business establish a strong online presence. We create fast, user-friendly, and mobile-optimized websites tailored to your business needs.',
-    features: [
-      'Responsive Design',
-      'Modern UI/UX',
-      'Contact Forms',
-      'WhatsApp Integration',
-      'Google Maps Integration',
-      'SEO-Friendly Structure',
-      'Fast Loading Speed',
-      'Mobile & Tablet Friendly',
-    ],
-    highlights: ['Responsive Design', 'Modern UI/UX', 'Contact Forms', 'Mobile Friendly'],
+    title: 'Business Website',
+    icon: 'Building2',
+    shortDesc: 'Professional websites that represent your brand.',
+    features: ['Responsive Design', 'Company Profile', 'Gallery', 'Contact Form', 'Google Maps', 'WhatsApp Chat'],
+    highlights: ['Company Profile', 'Business Information', 'Contact Forms', 'Mobile Friendly'],
+  },
+  {
+    id: 'ecommerce',
+    title: 'E-Commerce Website',
+    icon: 'ShoppingCart',
+    shortDesc: 'Sell products online with a powerful store.',
+    features: ['Product Listings', 'Categories', 'Shopping Cart', 'Book/Order Products', 'Customer Accounts', 'Admin Dashboard', 'Inventory Management', 'Cash on Delivery', 'WhatsApp Order Confirmation'],
+    highlights: ['Online Store', 'Shopping Cart', 'Product Management', 'Online Orders'],
   },
   {
     id: 'maintenance',
     title: 'Website Maintenance',
     icon: 'Wrench',
-    shortDesc:
-      'Keep your website secure, up-to-date, and running smoothly. We provide ongoing maintenance services to ensure your website performs at its best.',
-    features: [
-      'Website Updates',
-      'Bug Fixes',
-      'Security Checks',
-      'Performance Optimization',
-      'Backup & Recovery',
-      'Content Updates',
-      'Technical Support',
-    ],
-    highlights: ['Website Updates', 'Security Checks', 'Backup & Recovery', 'Technical Support'],
-  },
-  {
-    id: 'hosting',
-    title: 'Domain & Hosting Services',
-    icon: 'Server',
-    shortDesc:
-      'We help you register your domain name and choose reliable web hosting solutions to ensure your website is secure, fast, and always available online.',
-    features: [
-      'Domain Name Registration',
-      'Web Hosting Setup',
-      'SSL Certificate Installation',
-      'Business Email Setup',
-      'DNS Configuration',
-      'Website Migration',
-      'Hosting Renewal Assistance',
-    ],
-    highlights: ['Domain Registration', 'Web Hosting Setup', 'SSL Certificate', 'Business Email Setup'],
-  },
-]
-
-export const COMING_SOON_SERVICES = [
-  {
-    id: 'ecommerce',
-    title: 'E-Commerce Website Development',
-    icon: 'ShoppingCart',
-    shortDesc:
-      'Launch your online store with a secure shopping experience, product management, and online ordering features.',
-    comingSoon: true,
-  },
-  {
-    id: 'redesign',
-    title: 'Website Redesign',
-    icon: 'Palette',
-    shortDesc: 'Transform your existing website with a fresh, modern, and responsive design.',
-    comingSoon: true,
+    shortDesc: 'Keep your website secure, fast, and up to date.',
+    features: ['Monthly Updates', 'Security', 'Backup', 'Performance', 'Bug Fixes'],
+    highlights: ['Updates', 'Backup', 'Security', 'Bug Fixes'],
   },
   {
     id: 'seo',
-    title: 'SEO Optimization',
-    icon: 'TrendingUp',
-    shortDesc: "Improve your website's visibility on search engines and attract more customers.",
-    comingSoon: true,
-  },
-  {
-    id: 'marketing',
-    title: 'Digital Marketing',
-    icon: 'Megaphone',
-    shortDesc: 'Grow your business through effective online marketing strategies and social media campaigns.',
-    comingSoon: true,
-  },
-  {
-    id: 'ai',
-    title: 'AI-Powered Business Solutions',
-    icon: 'Bot',
-    shortDesc: 'Integrate smart AI tools to automate processes and improve customer engagement.',
-    comingSoon: true,
+    title: 'SEO Basics',
+    icon: 'Search',
+    shortDesc: 'Get found on Google with optimized websites.',
+    features: ['Google Search Optimization', 'Fast Loading', 'Mobile Optimization', 'Meta Tags', 'Sitemap'],
+    highlights: ['Google Search Optimization', 'Fast Loading', 'Mobile Optimization'],
   },
 ]
-
-export const SERVICES_INTRO = {
-  tag: 'Our Current Services',
-  title: 'What We Offer Today',
-  subtitle:
-    'We currently specialize in professional Business Website Development, Website Maintenance, and Domain & Hosting Services. As we continue to grow, we\'ll be introducing additional digital services to help businesses succeed online. Stay tuned for exciting new offerings coming soon!',
-}
-
-/** @deprecated Use CURRENT_SERVICES — kept for any legacy imports */
-export const SERVICES = CURRENT_SERVICES
 
 export const WHY_CHOOSE_US = [
   { icon: 'DollarSign', title: 'Affordable Pricing', desc: 'Quality websites at prices that fit your budget.' },
@@ -151,7 +82,7 @@ export const PROCESS_STEPS = [
   { step: 7, title: 'Support', desc: 'We stay with you after launch.' },
 ]
 
-export const CURRENT_PORTFOLIO = [
+export const PORTFOLIO = [
   {
     id: 1,
     title: 'Green Leaf Restaurant',
@@ -159,7 +90,6 @@ export const CURRENT_PORTFOLIO = [
     type: 'Business Website',
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
     desc: 'Modern restaurant website with menu, gallery, and online reservations.',
-    features: ['Responsive Design', 'Menu & Gallery', 'Contact Form', 'Google Maps', 'WhatsApp Integration'],
   },
   {
     id: 2,
@@ -168,11 +98,7 @@ export const CURRENT_PORTFOLIO = [
     type: 'Business Website',
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
     desc: 'Corporate profile website with team section and service showcase.',
-    features: ['Company Profile', 'Services Showcase', 'Team Section', 'Contact Form', 'Mobile Optimized'],
   },
-]
-
-export const COMING_SOON_PORTFOLIO = [
   {
     id: 3,
     title: 'Fashion Hub Store',
@@ -180,7 +106,6 @@ export const COMING_SOON_PORTFOLIO = [
     type: 'E-Commerce Website',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeqqOGwUSOtmw6_BiFkYK-luVrX-2djwA0mrVItdU0eQ&s=10',
     desc: 'Full e-commerce store with product catalog and shopping cart.',
-    comingSoon: true,
   },
   {
     id: 4,
@@ -189,46 +114,10 @@ export const COMING_SOON_PORTFOLIO = [
     type: 'Portfolio Website',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
     desc: 'Stunning portfolio showcasing creative work and client projects.',
-    comingSoon: true,
   },
 ]
 
-export const PORTFOLIO_INTRO = {
-  tag: 'Our Current Work',
-  title: 'Business Websites We Build',
-  subtitle:
-    'These sample projects showcase the business websites we currently deliver. E-commerce and portfolio-style projects are coming soon as we expand our services.',
-}
 
-/** All portfolio items — current first, then coming soon */
-export const PORTFOLIO = [...CURRENT_PORTFOLIO, ...COMING_SOON_PORTFOLIO]
-
-export const TESTIMONIALS = [
-  {
-    name: 'Sarah Mitchell',
-    company: 'Bloom Cafe',
-    rating: 5,
-    text: 'A Group Web Solution built us a beautiful website that brought in so many new customers. Professional, fast, and affordable!',
-  },
-  {
-    name: 'James Rodriguez',
-    company: 'TechFix Pro',
-    rating: 5,
-    text: 'They understood exactly what we needed. Our new business website looks modern and works perfectly on mobile phones.',
-  },
-  {
-    name: 'Priya Sharma',
-    company: 'Style Boutique',
-    rating: 5,
-    text: 'Our online store is exactly what we wanted. Easy to manage and our customers love the shopping experience.',
-  },
-  {
-    name: 'Michael Chen',
-    company: 'BuildRight Construction',
-    rating: 5,
-    text: 'Great team, great communication, and an amazing final product. Highly recommend for any business website.',
-  },
-]
 
 export const PRICING = [
   {
@@ -282,8 +171,7 @@ export const PRICING = [
       '6 Months Free Support',
     ],
     popular: false,
-    comingSoon: true,
-    cta: 'Coming Soon',
+    cta: 'Go Premium',
   },
 ]
 
@@ -306,7 +194,7 @@ export const FAQS = [
   },
   {
     q: 'Do you build online stores?',
-    a: 'E-commerce websites are coming soon! We currently focus on business websites, maintenance, and domain & hosting. Contact us to be notified when our Premium e-commerce package launches.',
+    a: 'Yes! Our Premium package includes a full e-commerce website with product listings, shopping cart, order management, and WhatsApp order confirmations.',
   },
   {
     q: 'Will my website work on mobile phones?',
