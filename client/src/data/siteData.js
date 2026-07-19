@@ -66,8 +66,8 @@ export const COMING_SOON_SERVICES = SERVICES.filter(({ id }) => id === 'seo')
 
 export const SERVICES_INTRO = {
   tag: 'What We Do',
-  title: 'Professional Web Solutions for Your Business',
-  subtitle: 'We build modern, responsive websites that help companies grow online and connect with customers more effectively.',
+  title: 'Professional Web Services',
+  subtitle: 'Affordable, modern website packages for businesses ready to grow online.',
 }
 
 export const WHY_CHOOSE_US = [
@@ -131,8 +131,8 @@ export const COMING_SOON_PORTFOLIO = PORTFOLIO.slice(2)
 
 export const PORTFOLIO_INTRO = {
   tag: 'Our Work',
-  title: 'A Glimpse of the Websites We Build',
-  subtitle: 'From restaurants to service businesses, we create modern websites that look great and help turn visitors into customers.',
+  title: 'See Business Websites in Action',
+  subtitle: 'Explore the types of sites we build for businesses, with more project styles coming soon.',
 }
 
 export const TESTIMONIALS = [
@@ -140,25 +140,25 @@ export const TESTIMONIALS = [
     name: 'Sarah Mitchell',
     company: 'Bloom Cafe',
     rating: 5,
-    text: 'A Group Web Solution built us a beautiful website that brought in so many new customers. Professional, fast, and affordable!',
+    text: 'A Group Web Solution built us a beautiful website that brought in so many new customers. Professional, fast, and affordable!'
   },
   {
     name: 'James Rodriguez',
     company: 'TechFix Pro',
     rating: 5,
-    text: 'They understood exactly what we needed. Our new business website looks modern and works perfectly on mobile phones.',
+    text: 'They understood exactly what we needed. Our new business website looks modern and works perfectly on mobile phones.'
   },
   {
     name: 'Priya Sharma',
     company: 'Style Boutique',
     rating: 5,
-    text: 'Our online store is exactly what we wanted. Easy to manage and our customers love the shopping experience.',
+    text: 'Our online store is exactly what we wanted. Easy to manage and our customers love the shopping experience.'
   },
   {
     name: 'Michael Chen',
     company: 'BuildRight Construction',
     rating: 5,
-    text: 'Great team, great communication, and an amazing final product. Highly recommend for any business website.',
+    text: 'Great team, great communication, and an amazing final product. Highly recommend for any business website.'
   },
 ]
 

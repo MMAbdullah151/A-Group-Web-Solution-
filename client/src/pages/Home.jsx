@@ -109,10 +109,10 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-12">
-            <p className="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-amber-700">
+            <p className="mb-6 text-center text-sm font-semibold uppercase tracking-[0.3em] text-amber-700">
               Coming Soon
             </p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
               {COMING_SOON_SERVICES.map((service) => (
                 <ServiceCard key={service.id} service={service} compact />
               ))}
