@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X, Globe } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { SITE, NAV_LINKS } from '../data/siteData'
 
 export default function Navbar() {
@@ -10,9 +10,11 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary">
-            <Globe className="h-5 w-5 text-secondary" />
-          </div>
+          <img
+            src="/Logo.jpeg"
+            alt="A Group Web Solution logo"
+            className="h-10 w-10 rounded-xl object-cover"
+          />
           <div>
             <span className="block text-lg font-bold text-primary leading-tight">{SITE.name}</span>
             <span className="hidden text-xs text-gray-500 sm:block">{SITE.tagline}</span>
