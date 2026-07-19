@@ -3,6 +3,12 @@ import PageHero from '../components/PageHero'
 import SectionHeading, { CTASection } from '../components/SectionHeading'
 import { WHY_CHOOSE_US, SITE } from '../data/siteData'
 
+const TEAM = [
+  { name: 'Alex Johnson', role: 'Founder & Lead Developer', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80' },
+  { name: 'Maria Garcia', role: 'UI/UX Designer', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80' },
+  { name: 'David Kim', role: 'Full Stack Developer', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80' },
+]
+
 export default function About() {
   return (
     <>
@@ -90,6 +96,29 @@ export default function About() {
               </div>
             )
           })}
+        </div>
+      </section>
+
+      <section className="section-padding bg-section">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            tag="Our Team"
+            title="Meet the People Behind Your Website"
+            subtitle="A passionate team dedicated to bringing your vision to life."
+          />
+          <div className="grid gap-8 sm:grid-cols-3">
+            {TEAM.map((member) => (
+              <div key={member.name} className="text-center">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="mx-auto mb-4 h-32 w-32 rounded-full object-cover ring-4 ring-secondary/20"
+                />
+                <h3 className="font-bold text-primary">{member.name}</h3>
+                <p className="text-sm text-gray-500">{member.role}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
