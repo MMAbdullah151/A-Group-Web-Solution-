@@ -165,7 +165,7 @@ export const TESTIMONIALS = [
 export const PRICING = [
   {
     name: 'Starter',
-    price: 'LKR 10,000',
+    price: 'LKR 25,000',
     period: 'one-time',
     desc: 'Perfect for small businesses getting started online.',
     features: [
@@ -182,7 +182,7 @@ export const PRICING = [
   },
   {
     name: 'Professional',
-    price: 'LKR 20,000',
+    price: 'LKR 45,000',
     period: 'one-time',
     desc: 'Best for growing businesses that need more features.',
     features: [
@@ -200,7 +200,7 @@ export const PRICING = [
   },
   {
     name: 'Premium',
-    price: 'LKR 30,000',
+    price: 'LKR 75,000',
     period: 'one-time',
     desc: 'Full e-commerce solution for online selling.',
     features: [
