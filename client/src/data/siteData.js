@@ -3,7 +3,7 @@ export const SITE = {
   tagline: 'Connecting Businesses Worldwide',
   phone: '+94 77 335 1122',
   whatsapp: '94773351122',
-  email: 'mmabdulrahman57@gmail.com',
+  email: 'websolutionagroup@gmail.com',
   address: 'Gampaha, Sri Lanka',
   mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.62208015947!2d79.861243!3d6.927079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2593cf65a1e9d%3A0xe13da4b400e2da38!2sColombo!5e0!3m2!1sen!2slk!4v1700000000000',
   social: {
@@ -277,9 +277,9 @@ export const WEBSITE_TYPES = [
 
 export const BUDGET_OPTIONS = [
   'Under LKR 25,000',
-  'LKR 25,000 - LKR 50,000',
-  'LKR 50,000 - LKR 75,000',
-  'Over $1000',
+  'LKR 25,000 - LKR 45,000',
+  'LKR 45,000 - LKR 75,000',
+  'Over 75,000',
   'Not Sure Yet',
 ]
 
