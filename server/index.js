@@ -43,6 +43,11 @@ app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }))
 app.use(express.json({ limit: '1mb' }))
 app.use('/uploads', express.static(uploadsDir))
 
+const clientBuildPath = path.join(__dirname, '../client/dist')
+if (fs.existsSync(clientBuildPath)) {
+  app.use(express.static(clientBuildPath))
+}
+
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 30 })
 app.use('/api', limiter)
 
@@ -134,6 +139,14 @@ app.get('/api/orders', async (_req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch orders' })
   }
+})
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next()
+  if (fs.existsSync(clientBuildPath)) {
+    return res.sendFile(path.join(clientBuildPath, 'index.html'))
+  }
+  next()
 })
 
 app.use((err, _req, res, _next) => {

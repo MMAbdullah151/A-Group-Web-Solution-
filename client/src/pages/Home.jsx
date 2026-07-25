@@ -6,7 +6,6 @@ import ServiceCard from '../components/ServiceCard'
 import PortfolioCard from '../components/PortfolioCard'
 import {
   CURRENT_SERVICES,
-  COMING_SOON_SERVICES,
   WHY_CHOOSE_US,
   PROCESS_STEPS,
   CURRENT_PORTFOLIO,
@@ -101,22 +100,12 @@ export default function Home() {
           <SectionHeading
             tag="Our Current Services"
             title="Professional Web Solutions for Your Business"
-            subtitle="We currently specialize in Business Website Development, Website Maintenance, and Domain & Hosting Services — with more offerings coming soon."
+            subtitle="Business websites, e-commerce, maintenance, and SEO basics — everything you need to grow online."
           />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {CURRENT_SERVICES.map((service) => (
               <ServiceCard key={service.id} service={service} compact />
             ))}
-          </div>
-          <div className="mt-12">
-             <p className="mb-4 mt-10 text-center text-3xl font-black tracking-tight text-amber-700">
-                Coming Soon
-             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-4">
-              {COMING_SOON_SERVICES.map((service) => (
-                <ServiceCard key={service.id} service={service} compact />
-              ))}
-            </div>
           </div>
           <div className="mt-10 text-center">
             <Link to="/services" className="btn-primary">

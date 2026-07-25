@@ -61,8 +61,7 @@ export const SERVICES = [
   },
 ]
 
-export const CURRENT_SERVICES = SERVICES.filter(({ id }) => id !== 'seo')
-export const COMING_SOON_SERVICES = SERVICES.filter(({ id }) => id === 'seo')
+export const CURRENT_SERVICES = SERVICES
 
 export const SERVICES_INTRO = {
   tag: 'What We Do',
