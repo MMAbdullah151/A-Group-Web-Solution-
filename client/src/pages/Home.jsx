@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import SectionHeading, { CTASection, StarRating } from '../components/SectionHeading'
 import ServiceCard from '../components/ServiceCard'
 import PortfolioCard from '../components/PortfolioCard'
+import HeroAdCarousel from '../components/HeroAdCarousel'
 import {
   CURRENT_SERVICES,
+  HERO_ADS,
   WHY_CHOOSE_US,
   PROCESS_STEPS,
   CURRENT_PORTFOLIO,
@@ -60,25 +62,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative hidden flex-1 lg:block">
-            <div className="relative rounded-2xl border border-white/10 bg-white/5 p-2 backdrop-blur-sm">
-              <img
-                src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80"
-                alt="Team working on website development"
-                className="rounded-xl shadow-2xl"
-              />
-              <div className="absolute -bottom-4 -left-4 rounded-xl bg-white p-4 shadow-xl">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
-                    <Check className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-primary">Project Delivered</p>
-                    <p className="text-xs text-gray-500">On time, every time</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="relative w-full flex-1">
+            <HeroAdCarousel ads={HERO_ADS} />
           </div>
         </div>
       </section>

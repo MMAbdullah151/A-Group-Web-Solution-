@@ -38,4 +38,31 @@
   .card-hover {
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10;
   }
+
+  .hero-ad-zoom {
+    animation: hero-ad-zoom 8s ease-out forwards;
+  }
+
+  .hero-ad-float {
+    animation: hero-ad-float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes hero-ad-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes hero-ad-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }

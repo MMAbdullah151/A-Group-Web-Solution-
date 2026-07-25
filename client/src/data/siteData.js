@@ -294,3 +294,42 @@ export const FEATURE_OPTIONS = [
   'SEO Optimization',
   'Multi-language',
 ]
+
+export const HERO_ADS = [
+  {
+    id: 'business',
+    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&q=80',
+    title: 'Business Website Development',
+    subtitle: 'Modern, responsive websites that grow your brand online.',
+    badge: 'Most Popular',
+    link: '/services',
+    overlay: { icon: 'Check', title: 'Project Delivered', subtitle: 'On time, every time' },
+  },
+  {
+    id: 'ecommerce',
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&q=80',
+    title: 'E-Commerce Solutions',
+    subtitle: 'Launch your online store with cart, orders, and payments.',
+    badge: 'New Offer',
+    link: '/pricing',
+    overlay: { icon: 'ShoppingCart', title: 'Online Store Ready', subtitle: 'Sell products 24/7' },
+  },
+  {
+    id: 'seo',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80',
+    title: 'SEO & Performance',
+    subtitle: 'Get found on Google with fast, optimized websites.',
+    badge: 'Limited Time',
+    link: '/book-order',
+    overlay: { icon: 'TrendingUp', title: 'Rank Higher', subtitle: 'More traffic, more leads' },
+  },
+  {
+    id: 'maintenance',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80',
+    title: 'Website Maintenance',
+    subtitle: 'Security updates, backups, and support — worry-free.',
+    badge: 'Monthly Plans',
+    link: '/contact',
+    overlay: { icon: 'Shield', title: 'Always Protected', subtitle: 'Secure & up to date' },
+  },
+]
