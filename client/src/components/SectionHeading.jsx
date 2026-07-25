@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function SectionHeading({ tag, title, subtitle, center = true }) {
   return (
-    <div className={`mb-12 ${center ? 'text-center' : ''}`}>
+    <div className={`mb-12 ${center ? 'text-center' : ''}`} data-reveal>
       {tag && (
         <span className="mb-2 inline-block rounded-full bg-secondary/10 px-4 py-1 text-sm font-semibold text-primary">
           {tag}
@@ -21,7 +21,7 @@ export default function SectionHeading({ tag, title, subtitle, center = true }) 
 
 export function CTASection({ title, subtitle, buttonText = 'Get Started', buttonLink = '/book-order' }) {
   return (
-    <section className="section-padding bg-primary">
+    <section className="section-padding bg-primary" data-reveal>
       <div className="mx-auto max-w-4xl text-center">
         <h2 className="text-3xl font-bold text-white md:text-4xl">{title}</h2>
         {subtitle && <p className="mt-4 text-lg text-gray-300">{subtitle}</p>}

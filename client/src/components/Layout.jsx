@@ -2,10 +2,12 @@ import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import WhatsAppButton from './WhatsAppButton'
+import ScrollReveal from './ScrollReveal'
 
 export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollReveal />
       <Navbar />
       <main className="flex-1">
         <Outlet />
