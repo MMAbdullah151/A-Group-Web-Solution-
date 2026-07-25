@@ -19,7 +19,6 @@ export const NAV_LINKS = [
   { path: '/', label: 'Home' },
   { path: '/about', label: 'About' },
   { path: '/services', label: 'Services' },
-  { path: '/portfolio', label: 'Portfolio' },
   { path: '/pricing', label: 'Pricing' },
   { path: '/book-order', label: 'Book an Order' },
   { path: '/contact', label: 'Contact' },
@@ -89,50 +88,6 @@ export const PROCESS_STEPS = [
   { step: 6, title: 'Launch', desc: 'Your website goes live for the world to see.' },
   { step: 7, title: 'Support', desc: 'We stay with you after launch.' },
 ]
-
-export const PORTFOLIO = [
-  {
-    id: 1,
-    title: 'Green Leaf Restaurant',
-    category: 'Restaurant Website',
-    type: 'Business Website',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
-    desc: 'Modern restaurant website with menu, gallery, and online reservations.',
-  },
-  {
-    id: 2,
-    title: 'TechStart Solutions',
-    category: 'Company Website',
-    type: 'Business Website',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
-    desc: 'Corporate profile website with team section and service showcase.',
-  },
-  {
-    id: 3,
-    title: 'Fashion Hub Store',
-    category: 'Online Store',
-    type: 'E-Commerce Website',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeqqOGwUSOtmw6_BiFkYK-luVrX-2djwA0mrVItdU0eQ&s=10',
-    desc: 'Full e-commerce store with product catalog and shopping cart.',
-  },
-  {
-    id: 4,
-    title: 'Creative Studio',
-    category: 'Portfolio Website',
-    type: 'Portfolio Website',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
-    desc: 'Stunning portfolio showcasing creative work and client projects.',
-  },
-]
-
-export const CURRENT_PORTFOLIO = PORTFOLIO.slice(0, 2)
-export const COMING_SOON_PORTFOLIO = PORTFOLIO.slice(2)
-
-export const PORTFOLIO_INTRO = {
-  tag: 'Our Work',
-  title: 'Explore Our Projects',
-  subtitle: 'A selection of business websites we have built for clients.',
-}
 
 export const TESTIMONIALS = [
   {
@@ -248,7 +203,7 @@ export const FAQS = [
   },
   {
     q: 'Can I see examples of your work?',
-    a: 'Visit our Portfolio page to see demo projects including business websites, restaurant sites, online stores, and company profiles.',
+    a: 'Contact us and we can share examples of business websites, restaurant sites, online stores, and company profiles we have built.',
   },
 ]
 

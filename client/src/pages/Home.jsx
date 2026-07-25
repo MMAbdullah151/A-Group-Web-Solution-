@@ -1,18 +1,14 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import * as Icons from 'lucide-react'
-import SectionHeading, { CTASection, StarRating } from '../components/SectionHeading'
+import SectionHeading, { CTASection } from '../components/SectionHeading'
 import ServiceCard from '../components/ServiceCard'
-import PortfolioCard from '../components/PortfolioCard'
 import HeroAdCarousel from '../components/HeroAdCarousel'
 import {
   CURRENT_SERVICES,
   HERO_ADS,
   WHY_CHOOSE_US,
   PROCESS_STEPS,
-  CURRENT_PORTFOLIO,
-  COMING_SOON_PORTFOLIO,
-  TESTIMONIALS,
 } from '../data/siteData'
 
 export default function Home() {
@@ -142,31 +138,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Portfolio Preview */}
-      <section className="section-padding mx-auto max-w-7xl">
-        <SectionHeading
-          tag="Latest Projects"
-          title="See Our Work in Action"
-          subtitle="Explore sample business websites we build today, with more project types coming soon."
-        />
-        <div className="grid gap-6 sm:grid-cols-2" data-reveal-group>
-          {CURRENT_PORTFOLIO.map((project) => (
-            <PortfolioCard key={project.id} project={project} compact />
-          ))}
-        </div>
-        <div className="mt-6 grid gap-6 sm:grid-cols-2" data-reveal-group>
-          {COMING_SOON_PORTFOLIO.map((project) => (
-            <PortfolioCard key={project.id} project={project} compact />
-          ))}
-        </div>
-        <div className="mt-10 text-center" data-reveal>
-          <Link to="/portfolio" className="btn-primary">
-            View Full Portfolio
-            <ArrowRight className="h-5 w-5" />
-          </Link>
         </div>
       </section>
 
