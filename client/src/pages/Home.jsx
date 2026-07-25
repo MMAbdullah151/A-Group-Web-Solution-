@@ -20,14 +20,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-primary">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80"
-            alt=""
-            className="h-full w-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/80" />
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/80" />
         <div className="absolute -right-32 top-20 h-96 w-96 rounded-full bg-secondary/10 blur-3xl" />
         <div className="absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-secondary/10 blur-3xl" />
 
