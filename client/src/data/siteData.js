@@ -301,17 +301,20 @@ export const HERO_ADS = [
     image: '/03fc259d-80ab-412a-bfaa-7070906ed7c0.png',
     title: 'Business Website Development',
     link: '/services',
+    overlay: { icon: 'Check', title: 'Project Delivered', subtitle: 'On time, every time', tone: 'success' },
   },
   {
     id: 'ecommerce',
     image: '/e4edc22e-f395-4da6-a27e-fb6f013d6371.png',
     title: 'E-Commerce Solutions',
     link: '/pricing',
+    overlay: { icon: 'ShoppingCart', title: 'Online Store Ready', subtitle: 'Sell products 24/7', tone: 'success' },
   },
   {
     id: 'seo',
     image: '/3bc08326-309b-43ea-8286-6eeb832f454f.png',
     title: 'SEO & Performance',
     link: '/book-order',
+    overlay: { icon: 'TrendingUp', title: 'Rank Higher', subtitle: 'More traffic, more leads', tone: 'success' },
   },
 ]
