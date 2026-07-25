@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import {
-  Globe,
   Phone,
   Mail,
   MapPin,
@@ -30,13 +29,14 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white">
+    <footer className="relative bg-primary text-white">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/60 to-transparent" />
       <div className="section-padding mx-auto max-w-7xl">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="mb-4 flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/20">
-                <Globe className="h-5 w-5 text-secondary" />
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-secondary/20 bg-secondary/10">
+                <img src="/Logo.jpeg" alt="" className="h-full w-full object-cover" />
               </div>
               <div>
                 <p className="font-bold">{SITE.name}</p>

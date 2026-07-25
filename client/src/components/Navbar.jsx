@@ -7,7 +7,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md animate-slide-down">
+    <header className="sticky top-0 z-50 animate-slide-down border-b border-secondary/15 bg-white/95 backdrop-blur-md shadow-sm shadow-primary/5">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
           <img
@@ -30,8 +30,8 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 ${
                   isActive
-                    ? 'bg-primary/5 text-primary'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-primary hover:-translate-y-0.5'
+                    ? 'bg-secondary/10 text-accent'
+                    : 'text-gray-600 hover:bg-secondary/5 hover:text-accent hover:-translate-y-0.5'
                 }`
               }
             >

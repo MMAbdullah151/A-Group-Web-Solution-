@@ -100,7 +100,7 @@ export default function Pricing() {
                     to="/book-order"
                     className={`mt-8 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-all ${
                       plan.popular
-                        ? 'bg-secondary text-primary hover:bg-cyan-300'
+                        ? 'bg-secondary text-primary hover:bg-glow'
                         : 'bg-primary text-white hover:bg-primary/90'
                     }`}
                   >

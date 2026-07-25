@@ -35,7 +35,7 @@ export default function HeroAdCarousel({ ads }) {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="hero-glow relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-2 shadow-2xl shadow-primary/30 backdrop-blur-sm">
+      <div className="hero-glow relative overflow-hidden rounded-2xl border border-secondary/20 bg-white/5 p-2 shadow-2xl shadow-secondary/10 backdrop-blur-sm">
         <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white">
           {ads.map((ad, index) => {
             const isActive = index === active

@@ -46,7 +46,7 @@ export default function Newsletter({ variant = 'default' }) {
           disabled={loading}
           className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all disabled:opacity-60 ${
             isFooter
-              ? 'bg-secondary text-primary hover:bg-cyan-300'
+              ? 'bg-secondary text-primary hover:bg-glow'
               : 'btn-primary !py-2.5'
           }`}
         >

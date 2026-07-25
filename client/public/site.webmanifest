@@ -4,8 +4,8 @@
   "description": "Professional website development for businesses worldwide.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0A2540",
-  "theme_color": "#0A2540",
+  "background_color": "#031428",
+  "theme_color": "#031428",
   "icons": [
     {
       "src": "/favicon-192.png",

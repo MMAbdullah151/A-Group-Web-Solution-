@@ -31,7 +31,7 @@ export default function PortfolioCard({ project, onView, compact = false }) {
             <button
               type="button"
               onClick={() => onView?.(project)}
-              className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-primary transition hover:bg-cyan-300"
+              className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-primary transition hover:bg-glow"
             >
               View Project <Eye className="h-4 w-4" />
             </button>

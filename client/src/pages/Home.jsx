@@ -19,14 +19,14 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-primary">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/80" />
-        <div className="absolute -right-32 top-20 h-96 w-96 rounded-full bg-secondary/10 blur-3xl hero-blob" />
-        <div className="absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-secondary/10 blur-3xl hero-blob-delay" />
+      <section className="relative overflow-hidden bg-primary brand-hero-bg">
+        <div className="absolute inset-0 brand-hero-glow" />
+        <div className="absolute -right-32 top-20 h-96 w-96 rounded-full bg-secondary/15 blur-3xl hero-blob" />
+        <div className="absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-accent/10 blur-3xl hero-blob-delay" />
 
         <div className="section-padding relative mx-auto flex max-w-7xl flex-col items-center gap-12 lg:flex-row lg:items-center">
           <div className="flex-1 text-center lg:text-left">
-            <span className="mb-4 inline-block rounded-full bg-secondary/20 px-4 py-1.5 text-sm font-semibold text-secondary animate-fade-up">
+            <span className="mb-4 inline-block rounded-full border border-secondary/25 bg-secondary/15 px-4 py-1.5 text-sm font-semibold text-glow animate-fade-up">
               Connecting Businesses Worldwide
             </span>
             <h1 className="animate-fade-up-delay-1 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">

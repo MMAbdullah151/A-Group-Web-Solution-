@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0A2540;
-  --color-secondary: #00C2FF;
-  --color-section: #F5F7FA;
-  --color-text: #1F2937;
+  --color-primary: #031428;
+  --color-primary-light: #0A2F52;
+  --color-secondary: #00D4FF;
+  --color-accent: #0088FF;
+  --color-glow: #00E8FF;
+  --color-section: #EEF6FC;
+  --color-text: #0B1D33;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
@@ -40,13 +43,27 @@
 
 @layer utilities {
   .gradient-text {
-    @apply bg-gradient-to-r from-secondary to-cyan-300 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-secondary via-glow to-accent bg-clip-text text-transparent;
     background-size: 200% auto;
     animation: gradient-shimmer 4s ease-in-out infinite;
   }
 
+  .brand-hero-bg {
+    @apply bg-gradient-to-br from-primary via-primary-light to-primary;
+  }
+
+  .brand-hero-glow {
+    background:
+      radial-gradient(circle at 85% 15%, rgb(0 212 255 / 0.18), transparent 42%),
+      radial-gradient(circle at 10% 90%, rgb(0 136 255 / 0.12), transparent 38%);
+  }
+
+  .brand-panel {
+    @apply border border-secondary/15 bg-white/80 backdrop-blur-sm;
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3 font-semibold text-primary transition-all duration-300 hover:bg-cyan-300 hover:shadow-lg hover:shadow-secondary/30 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-6 py-3 font-semibold text-primary transition-all duration-300 hover:bg-glow hover:shadow-lg hover:shadow-secondary/40 active:scale-[0.98];
   }
 
   .btn-primary svg,
@@ -60,7 +77,7 @@
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-secondary hover:bg-secondary/20 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-secondary/35 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-glow hover:bg-secondary/15 hover:shadow-lg hover:shadow-secondary/20 active:scale-[0.98];
   }
 
   .section-padding {
@@ -68,7 +85,7 @@
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-secondary/20 hover:shadow-xl hover:shadow-secondary/10;
   }
 
   .icon-pop {
@@ -255,10 +272,10 @@
 @keyframes hero-glow {
   0%,
   100% {
-    box-shadow: 0 25px 50px -12px rgb(0 194 255 / 0.15);
+    box-shadow: 0 25px 50px -12px rgb(0 212 255 / 0.18);
   }
   50% {
-    box-shadow: 0 25px 50px -12px rgb(0 194 255 / 0.28);
+    box-shadow: 0 25px 50px -12px rgb(0 232 255 / 0.34);
   }
 }
 
