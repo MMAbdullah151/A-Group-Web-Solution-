@@ -44,11 +44,7 @@ export default function Newsletter({ variant = 'default' }) {
         <button
           type="submit"
           disabled={loading}
-          className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all disabled:opacity-60 ${
-            isFooter
-              ? 'bg-secondary text-primary hover:bg-glow'
-              : 'btn-primary !py-2.5'
-          }`}
+          className="btn-primary !py-2.5 disabled:opacity-60"
         >
           <Send className="h-4 w-4" />
           {loading ? 'Sending...' : 'Subscribe'}

@@ -73,7 +73,7 @@ export default function HeroAdCarousel({ ads }) {
             <button
               type="button"
               onClick={() => goTo(active - 1)}
-              className="absolute left-4 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-primary shadow-lg transition-all duration-300 hover:scale-110 hover:bg-secondary active:scale-95"
+              className="absolute left-4 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-accent shadow-lg transition-all duration-300 hover:scale-110 hover:bg-secondary hover:text-primary hover:shadow-secondary/40 active:scale-95"
               aria-label="Previous advertisement"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -81,7 +81,7 @@ export default function HeroAdCarousel({ ads }) {
             <button
               type="button"
               onClick={() => goTo(active + 1)}
-              className="absolute right-4 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-primary shadow-lg transition-all duration-300 hover:scale-110 hover:bg-secondary active:scale-95"
+              className="absolute right-4 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-accent shadow-lg transition-all duration-300 hover:scale-110 hover:bg-secondary hover:text-primary hover:shadow-secondary/40 active:scale-95"
               aria-label="Next advertisement"
             >
               <ChevronRight className="h-5 w-5" />

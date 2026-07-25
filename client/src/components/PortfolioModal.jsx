@@ -75,7 +75,7 @@ export default function PortfolioModal({ project, onClose }) {
             <Link to="/book-order" className="btn-primary flex-1 justify-center" onClick={onClose}>
               Start a Similar Project
             </Link>
-            <button type="button" onClick={onClose} className="btn-outline flex-1 justify-center">
+            <button type="button" onClick={onClose} className="btn-outline-light flex-1 justify-center">
               Close
             </button>
           </div>
