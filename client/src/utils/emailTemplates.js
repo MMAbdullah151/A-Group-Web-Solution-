@@ -103,8 +103,8 @@ export function buildOrderEmailHtml(order, options = {}) {
         .join('<br />')
     : logoName || imageCount > 0
       ? [
-          logoName ? `Logo file: ${escapeHtml(logoName)} (attached)` : null,
-          imageCount > 0 ? `${imageCount} reference image(s) attached to this email` : null,
+          logoName ? `Logo file: ${escapeHtml(logoName)}` : null,
+          imageCount > 0 ? `${imageCount} reference image(s) — filenames only (previews unavailable)` : null,
         ]
           .filter(Boolean)
           .join('<br />')
@@ -184,8 +184,8 @@ export function buildOrderEmailText(order, options = {}) {
         .join('\n')
     : logoName || imageCount > 0
       ? [
-          logoName ? `Logo: ${logoName} (attached to this email)` : null,
-          imageCount > 0 ? `Reference images: ${imageCount} file(s) attached` : null,
+          logoName ? `Logo: ${logoName}` : null,
+          imageCount > 0 ? `Reference images: ${imageCount} file(s) — see HTML email for previews` : null,
         ]
           .filter(Boolean)
         .join('\n')
