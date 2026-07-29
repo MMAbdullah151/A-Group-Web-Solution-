@@ -1,4 +1,5 @@
 import { SITE } from '../data/siteData'
+import { buildContactEmailHtml, buildContactEmailText, buildOrderEmailHtml, buildOrderEmailText } from './emailTemplates.js'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 const FORM_SUBMIT_URL = `https://formsubmit.co/ajax/${encodeURIComponent(SITE.email)}`
@@ -21,19 +22,24 @@ async function request(endpoint, options = {}) {
   return data
 }
 
-async function submitViaFormSubmit(fields, files = []) {
+async function submitHtmlEmail({ subject, replyTo, html, text, files = [] }) {
   const formData = new FormData()
-  formData.append('_subject', fields._subject)
-  formData.append('_template', 'table')
+  formData.append('_subject', subject)
+  formData.append('_template', 'box')
   formData.append('_captcha', 'false')
+  formData.append('_replyto', replyTo)
+  formData.append('message', text || html)
 
-  Object.entries(fields).forEach(([key, value]) => {
-    if (key.startsWith('_')) return
-    formData.append(key, Array.isArray(value) ? value.join(', ') : String(value ?? ''))
+  files.filter(Boolean).forEach((file, index) => {
+    const label = file.name || `attachment-${index + 1}`
+    formData.append('attachment', file, label)
   })
 
-  files.filter(Boolean).forEach((file) => {
-    formData.append('attachment', file, file.name)
+  files.filter(Boolean).forEach((file, index) => {
+    const label = file.name?.toLowerCase().includes('logo')
+      ? file.name
+      : file.name || `attachment-${index + 1}`
+    formData.append('attachment', file, label)
   })
 
   const res = await fetch(FORM_SUBMIT_URL, {
@@ -43,7 +49,7 @@ async function submitViaFormSubmit(fields, files = []) {
   })
 
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) {
+  if (!res.ok || data.success === 'false') {
     throw new Error(data.message || 'Failed to send email')
   }
 
@@ -73,47 +79,48 @@ async function submitOrderViaApi(orderData, { logo = null, images = [] } = {}) {
 }
 
 async function submitOrderViaFormSubmit(orderData, { logo = null, images = [] } = {}) {
-  return submitViaFormSubmit(
-    {
-      _subject: `New Order: ${orderData.fullName} - ${orderData.websiteType}`,
-      'Full Name': orderData.fullName,
-      Company: orderData.companyName,
-      Email: orderData.email,
-      Phone: orderData.phone,
-      WhatsApp: orderData.whatsapp,
-      'Business Type': orderData.businessType,
-      'Website Type': orderData.websiteType,
-      Budget: orderData.budget,
-      Features: orderData.requiredFeatures,
-      Description: orderData.projectDescription,
-    },
-    [logo, ...images]
-  )
+  const templateOptions = {
+    logoName: logo?.name,
+    imageCount: images.length,
+  }
+
+  return submitHtmlEmail({
+    subject: `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`,
+    replyTo: orderData.email,
+    html: buildOrderEmailHtml(orderData, templateOptions),
+    text: buildOrderEmailText(orderData, templateOptions),
+    files: [logo, ...images],
+  })
 }
 
 export async function submitOrder(orderData, fileOptions = {}) {
+  const { honeypot, ...payload } = orderData
+  if (honeypot) return { success: true }
+
   try {
-    return await submitOrderViaApi(orderData, fileOptions)
+    return await submitOrderViaApi(payload, fileOptions)
   } catch (err) {
     console.warn('Server order submit failed, using email fallback:', err.message)
-    return submitOrderViaFormSubmit(orderData, fileOptions)
+    return submitOrderViaFormSubmit(payload, fileOptions)
   }
 }
 
 export async function submitContact(formData) {
+  const { honeypot, ...payload } = formData
+  if (honeypot) return { success: true }
+
   try {
     return await request('/contact', {
       method: 'POST',
-      body: JSON.stringify(formData),
+      body: JSON.stringify(payload),
     })
   } catch (err) {
     console.warn('Server contact submit failed, using email fallback:', err.message)
-    return submitViaFormSubmit({
-      _subject: `New Contact: ${formData.name}`,
-      Name: formData.name,
-      Email: formData.email,
-      Phone: formData.phone,
-      Message: formData.message,
+    return submitHtmlEmail({
+      subject: `New Contact Message | ${payload.name}`,
+      replyTo: payload.email,
+      html: buildContactEmailHtml(payload),
+      text: buildContactEmailText(payload),
     })
   }
 }

@@ -1,58 +1,4 @@
-import nodemailer from 'nodemailer'
-import { BUSINESS_EMAIL } from '../config.js'
-
-let transporter = null
-
-function getTransporter() {
-  if (transporter) return transporter
-
-  const smtpUser = process.env.SMTP_USER
-  if (!smtpUser || smtpUser === 'your-email@gmail.com') {
-    return null
-  }
-
-  transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-      user: smtpUser,
-      pass: process.env.SMTP_PASS,
-    },
-  })
-
-  return transporter
-}
-
-export function getAdminEmail() {
-  return process.env.ADMIN_EMAIL || BUSINESS_EMAIL
-}
-
-export async function sendAdminEmail(subject, html, options = {}) {
-  const transport = getTransporter()
-  const adminEmail = getAdminEmail()
-
-  if (!transport) {
-    console.log('[Email] SMTP not configured. Set SMTP_USER and SMTP_PASS in server/.env')
-    console.log('[Email] Skipped:', subject)
-    return false
-  }
-
-  try {
-    await transport.sendMail({
-      from: `"A Group Web Solution" <${process.env.SMTP_USER}>`,
-      to: adminEmail,
-      replyTo: options.replyTo || undefined,
-      subject,
-      html,
-    })
-    console.log('[Email] Sent to', adminEmail, ':', subject)
-    return true
-  } catch (err) {
-    console.error('[Email] Failed to send to', adminEmail, ':', err.message)
-    return false
-  }
-}
+import { SITE } from '../data/siteData'
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -67,7 +13,12 @@ function display(value, fallback = 'Not provided') {
   return escapeHtml(text || fallback)
 }
 
-function formatFeatures(features) {
+function plain(value, fallback = 'Not provided') {
+  const text = value?.toString().trim()
+  return text || fallback
+}
+
+function formatFeaturesHtml(features) {
   if (!features?.length) {
     return '<span style="color:#64748b">None selected</span>'
   }
@@ -75,6 +26,11 @@ function formatFeatures(features) {
   return `<ul style="margin:0;padding-left:18px;color:#0B1D33">${features
     .map((feature) => `<li style="margin:4px 0">${escapeHtml(feature)}</li>`)
     .join('')}</ul>`
+}
+
+function formatFeaturesText(features) {
+  if (!features?.length) return 'None selected'
+  return features.map((feature) => `  • ${feature}`).join('\n')
 }
 
 function row(label, value, { isHtml = false } = {}) {
@@ -94,27 +50,34 @@ function section(title) {
   `
 }
 
-function formatUploadLinks(urls, baseUrl) {
-  if (!urls?.length) return null
-  return urls
-    .map((url, index) => {
-      const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
-      return `<a href="${fullUrl}" style="color:#0088FF">View file ${index + 1}</a>`
-    })
-    .join('<br />')
+function textLine(label, value) {
+  return `${label.padEnd(18)}: ${plain(value)}`
 }
 
-export function orderEmailHtml(order, baseUrl = '') {
-  const logoLink = order.logoUrl
-    ? `<a href="${order.logoUrl.startsWith('http') ? order.logoUrl : `${baseUrl}${order.logoUrl}`}" style="color:#0088FF">View uploaded logo</a>`
-    : null
-  const imageLinks = formatUploadLinks(order.imageUrls, baseUrl)
-  const uploadedLinks = [logoLink, imageLinks].filter(Boolean).join('<br />')
+export function buildOrderEmailHtml(order, options = {}) {
+  const { logoName, imageCount = 0, logoUrl, imageUrls, baseUrl = '' } = options
 
   const attachmentNote =
-    order.logoUrl || order.imageUrls?.length
-      ? 'Customer uploaded files with this order.'
+    logoName || imageCount > 0
+      ? [
+          logoName ? `Logo file: ${escapeHtml(logoName)} (attached)` : null,
+          imageCount > 0 ? `${imageCount} reference image(s) attached` : null,
+        ]
+          .filter(Boolean)
+          .join('<br />')
       : 'No files attached'
+
+  const uploadedLinks = [
+    logoUrl
+      ? `<a href="${logoUrl.startsWith('http') ? logoUrl : `${baseUrl}${logoUrl}`}" style="color:#0088FF">View uploaded logo</a>`
+      : null,
+    ...(imageUrls || []).map((url, index) => {
+      const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
+      return `<a href="${fullUrl}" style="color:#0088FF">View image ${index + 1}</a>`
+    }),
+  ]
+    .filter(Boolean)
+    .join('<br />')
 
   return `
 <!DOCTYPE html>
@@ -123,7 +86,7 @@ export function orderEmailHtml(order, baseUrl = '') {
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:680px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #dbeafe;box-shadow:0 10px 30px rgba(3,20,40,0.08)">
       <tr>
         <td style="padding:28px 24px;background:linear-gradient(135deg,#031428 0%,#0A2F52 100%);color:#ffffff">
-          <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#00E8FF;margin-bottom:8px">A Group Web Solution</div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#00E8FF;margin-bottom:8px">${escapeHtml(SITE.name)}</div>
           <h1 style="margin:0;font-size:24px;line-height:1.3;color:#ffffff">New Website Order</h1>
           <p style="margin:10px 0 0;color:#cbd5e1;font-size:14px">A customer submitted the Book an Order form on your website.</p>
         </td>
@@ -141,13 +104,13 @@ export function orderEmailHtml(order, baseUrl = '') {
             ${row('Business Type', order.businessType)}
             ${row('Website Type', order.websiteType)}
             ${row('Budget', order.budget)}
-            ${row('Required Features', formatFeatures(order.requiredFeatures), { isHtml: true })}
+            ${row('Required Features', formatFeaturesHtml(order.requiredFeatures), { isHtml: true })}
             ${section('Project Description')}
             <tr>
               <td colspan="2" style="padding:16px;color:#0B1D33;line-height:1.7;white-space:pre-wrap;border-bottom:1px solid #e2e8f0">${display(order.projectDescription)}</td>
             </tr>
             ${section('Attachments')}
-            ${row('Uploaded Files', attachmentNote)}
+            ${row('Uploaded Files', attachmentNote, { isHtml: true })}
             ${uploadedLinks ? row('File Links', uploadedLinks, { isHtml: true }) : ''}
           </table>
         </td>
@@ -163,7 +126,55 @@ export function orderEmailHtml(order, baseUrl = '') {
   `.trim()
 }
 
-export function contactEmailHtml(contact) {
+export function buildOrderEmailText(order, options = {}) {
+  const { logoName, imageCount = 0 } = options
+
+  const attachments = logoName || imageCount > 0
+    ? [
+        logoName ? `Logo: ${logoName} (attached to this email)` : null,
+        imageCount > 0 ? `Reference images: ${imageCount} file(s) attached` : null,
+      ]
+        .filter(Boolean)
+        .join('\n')
+    : 'No files attached'
+
+  return `
+${'='.repeat(48)}
+${SITE.name.toUpperCase()}
+NEW WEBSITE ORDER
+${'='.repeat(48)}
+
+CUSTOMER INFORMATION
+${'-'.repeat(48)}
+${textLine('Full Name', order.fullName)}
+${textLine('Company Name', order.companyName)}
+${textLine('Email', order.email)}
+${textLine('Phone', order.phone)}
+${textLine('WhatsApp', order.whatsapp)}
+
+PROJECT DETAILS
+${'-'.repeat(48)}
+${textLine('Business Type', order.businessType)}
+${textLine('Website Type', order.websiteType)}
+${textLine('Budget', order.budget)}
+
+Required Features:
+${formatFeaturesText(order.requiredFeatures)}
+
+PROJECT DESCRIPTION
+${'-'.repeat(48)}
+${plain(order.projectDescription)}
+
+ATTACHMENTS
+${'-'.repeat(48)}
+${attachments}
+
+${'-'.repeat(48)}
+Reply directly to this email to contact the customer.
+  `.trim()
+}
+
+export function buildContactEmailHtml(contact) {
   return `
 <!DOCTYPE html>
 <html>
@@ -189,5 +200,21 @@ export function contactEmailHtml(contact) {
     </table>
   </body>
 </html>
+  `.trim()
+}
+
+export function buildContactEmailText(contact) {
+  return `
+${'='.repeat(48)}
+${SITE.name.toUpperCase()}
+NEW CONTACT MESSAGE
+${'='.repeat(48)}
+
+${textLine('Name', contact.name)}
+${textLine('Email', contact.email)}
+${textLine('Phone', contact.phone)}
+
+Message:
+${plain(contact.message)}
   `.trim()
 }

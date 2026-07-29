@@ -111,7 +111,7 @@ app.post('/api/orders', async (req, res) => {
 
     const siteUrl = process.env.CLIENT_URL || 'https://www.a-group-web-solution.store'
     const emailSent = await sendAdminEmail(
-      `New Order: ${data.fullName} - ${data.websiteType}`,
+      `New Website Order | ${data.fullName} | ${data.websiteType}`,
       orderEmailHtml(order, siteUrl),
       { replyTo: data.email }
     )
