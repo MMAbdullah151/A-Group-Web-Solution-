@@ -1,9 +1,9 @@
 import { SITE } from '../data/siteData'
-import { buildContactEmailHtml, buildContactEmailText, buildOrderEmailHtml, buildOrderEmailText } from './emailTemplates.js'
-import { buildFilePreviews } from './filePreviews.js'
+import { buildContactEmailHtml, buildContactEmailText, buildOrderEmailText } from './emailTemplates.js'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 const FORM_SUBMIT_URL = `https://formsubmit.co/ajax/${encodeURIComponent(SITE.email)}`
+const MAX_ATTACHMENT_BYTES = 9 * 1024 * 1024
 
 async function request(endpoint, options = {}) {
   const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -23,21 +23,41 @@ async function request(endpoint, options = {}) {
   return data
 }
 
-async function submitHtmlEmail({ subject, replyTo, html, text, files = [] }) {
+function getAttachmentSize(files = {}) {
+  const { logo = null, images = [] } = files
+  return [logo, ...images.filter(Boolean)].reduce((total, file) => total + (file?.size || 0), 0)
+}
+
+async function submitFormSubmitEmail({ subject, replyTo, message, fields = {}, files = {} }) {
   const formData = new FormData()
   formData.append('_subject', subject)
   formData.append('_template', 'box')
   formData.append('_captcha', 'false')
-  formData.append('_replyto', replyTo)
-  formData.append('message', html || text)
 
-  if (files.logo) {
-    formData.append('Logo', files.logo, files.logo.name)
+  if (replyTo) {
+    formData.append('_replyto', replyTo)
   }
 
-  files.images.filter(Boolean).forEach((file, index) => {
-    formData.append(`Reference Image ${index + 1}`, file, file.name)
+  formData.append('message', message)
+
+  Object.entries(fields).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      formData.append(key, Array.isArray(value) ? value.join(', ') : String(value))
+    }
   })
+
+  const { logo = null, images = [] } = files
+  const attachmentSize = getAttachmentSize(files)
+
+  if (attachmentSize > 0 && attachmentSize <= MAX_ATTACHMENT_BYTES) {
+    if (logo) {
+      formData.append('Logo', logo, logo.name || 'logo')
+    }
+
+    images.filter(Boolean).forEach((file, index) => {
+      formData.append(`Reference Image ${index + 1}`, file, file.name || `image-${index + 1}`)
+    })
+  }
 
   const res = await fetch(FORM_SUBMIT_URL, {
     method: 'POST',
@@ -46,8 +66,13 @@ async function submitHtmlEmail({ subject, replyTo, html, text, files = [] }) {
   })
 
   const data = await res.json().catch(() => ({}))
-  if (!res.ok || data.success === 'false') {
-    throw new Error(data.message || 'Failed to send email')
+
+  if (!res.ok) {
+    throw new Error(data.message || `Email send failed (${res.status})`)
+  }
+
+  if (String(data.success).toLowerCase() === 'false') {
+    throw new Error(data.message || 'Email send failed')
   }
 
   return { success: true, message: 'Submitted successfully' }
@@ -58,10 +83,14 @@ async function submitOrderViaApi(orderData, { logo = null, images = [] } = {}) {
   const allFiles = [logo, ...images].filter(Boolean)
 
   if (allFiles.length > 0) {
-    const uploadResult = await uploadFiles(allFiles)
-    if (logo) payload.logoUrl = uploadResult.files[0]?.url || ''
-    if (images.length > 0) {
-      payload.imageUrls = uploadResult.files.slice(logo ? 1 : 0).map((f) => f.url)
+    try {
+      const uploadResult = await uploadFiles(allFiles)
+      if (logo) payload.logoUrl = uploadResult.files[0]?.url || ''
+      if (images.length > 0) {
+        payload.imageUrls = uploadResult.files.slice(logo ? 1 : 0).map((f) => f.url)
+      }
+    } catch {
+      // Server upload unavailable — email fallback will handle files.
     }
   }
 
@@ -71,37 +100,76 @@ async function submitOrderViaApi(orderData, { logo = null, images = [] } = {}) {
   })
 }
 
+function buildOrderFields(orderData) {
+  return {
+    'Full Name': orderData.fullName,
+    Company: orderData.companyName,
+    Email: orderData.email,
+    Phone: orderData.phone,
+    WhatsApp: orderData.whatsapp,
+    'Business Type': orderData.businessType,
+    'Website Type': orderData.websiteType,
+    Budget: orderData.budget,
+    Features: orderData.requiredFeatures,
+    Description: orderData.projectDescription,
+  }
+}
+
 async function submitOrderViaFormSubmit(orderData, { logo = null, images = [] } = {}) {
-  const previews = await buildFilePreviews({ logo, images })
   const templateOptions = {
     logoName: logo?.name,
     imageCount: images.length,
-    logoPreview: previews.logoPreview,
-    imagePreviews: previews.imagePreviews,
   }
 
-  const html = buildOrderEmailHtml(orderData, templateOptions)
-  const text = buildOrderEmailText(orderData, templateOptions)
+  const message = buildOrderEmailText(orderData, templateOptions)
+  const fields = buildOrderFields(orderData)
+  const files = { logo, images }
+  const attachmentSize = getAttachmentSize(files)
 
-  return submitHtmlEmail({
-    subject: `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`,
-    replyTo: orderData.email,
-    html,
-    text,
-    files: { logo, images },
-  })
+  if (attachmentSize > MAX_ATTACHMENT_BYTES) {
+    const oversizeMessage = `${message}\n\nATTACHMENT NOTE:\nCustomer selected files totaling ${(attachmentSize / (1024 * 1024)).toFixed(1)}MB, which is too large to email. Please contact the customer to request the files directly.`
+    return submitFormSubmitEmail({
+      subject: `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`,
+      replyTo: orderData.email,
+      message: oversizeMessage,
+      fields,
+      files: { logo: null, images: [] },
+    })
+  }
+
+  try {
+    return await submitFormSubmitEmail({
+      subject: `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`,
+      replyTo: orderData.email,
+      message,
+      fields,
+      files,
+    })
+  } catch (err) {
+    console.warn('Order email with attachments failed, retrying without files:', err.message)
+
+    const fallbackMessage = `${message}\n\nATTACHMENT NOTE:\nThe customer uploaded ${[
+      logo?.name ? `Logo: ${logo.name}` : null,
+      ...images.map((file, index) => `Image ${index + 1}: ${file.name}`),
+    ]
+      .filter(Boolean)
+      .join('\n')}\n\nPlease contact the customer to receive these files directly.`
+
+    return submitFormSubmitEmail({
+      subject: `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`,
+      replyTo: orderData.email,
+      message: fallbackMessage,
+      fields,
+      files: { logo: null, images: [] },
+    })
+  }
 }
 
 export async function submitOrder(orderData, fileOptions = {}) {
   const { honeypot, ...payload } = orderData
   if (honeypot) return { success: true }
 
-  const hasFiles = Boolean(fileOptions.logo || fileOptions.images?.length)
-
   try {
-    if (hasFiles) {
-      throw new Error('Use email delivery for file uploads')
-    }
     return await submitOrderViaApi(payload, fileOptions)
   } catch (err) {
     console.warn('Server order submit unavailable, using email delivery:', err.message)
@@ -120,12 +188,16 @@ export async function submitContact(formData) {
     })
   } catch (err) {
     console.warn('Server contact submit failed, using email fallback:', err.message)
-    return submitHtmlEmail({
+    return submitFormSubmitEmail({
       subject: `New Contact Message | ${payload.name}`,
       replyTo: payload.email,
-      html: buildContactEmailHtml(payload),
-      text: buildContactEmailText(payload),
-      files: { logo: null, images: [] },
+      message: buildContactEmailText(payload),
+      fields: {
+        Name: payload.name,
+        Email: payload.email,
+        Phone: payload.phone,
+        Message: payload.message,
+      },
     })
   }
 }
