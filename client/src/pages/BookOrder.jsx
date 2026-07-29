@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CheckCircle, AlertCircle, Upload, Loader2 } from 'lucide-react'
 import PageHero from '../components/PageHero'
-import { submitOrder, uploadFiles } from '../utils/api'
+import { submitOrder } from '../utils/api'
 import {
   BUSINESS_TYPES,
   WEBSITE_TYPES,
@@ -66,19 +66,7 @@ export default function BookOrder() {
     setStatus(null)
 
     try {
-      let logoUrl = ''
-      let imageUrls = []
-
-      const allFiles = [logo, ...images].filter(Boolean)
-      if (allFiles.length > 0) {
-        const uploadResult = await uploadFiles(allFiles)
-        if (logo) logoUrl = uploadResult.files[0]?.url || ''
-        if (images.length > 0) {
-          imageUrls = uploadResult.files.slice(logo ? 1 : 0).map((f) => f.url)
-        }
-      }
-
-      await submitOrder({ ...form, logoUrl, imageUrls })
+      await submitOrder(form, { logo, images })
       setStatus('success')
       setForm(INITIAL)
       setLogo(null)
