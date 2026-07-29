@@ -54,14 +54,57 @@ function textLine(label, value) {
   return `${label.padEnd(18)}: ${plain(value)}`
 }
 
-export function buildOrderEmailHtml(order, options = {}) {
-  const { logoName, imageCount = 0, logoUrl, imageUrls, baseUrl = '' } = options
+function renderImageGallery(logoPreview, imagePreviews = []) {
+  if (!logoPreview && !imagePreviews.length) {
+    return '<span style="color:#64748b">No images uploaded</span>'
+  }
 
-  const attachmentNote =
-    logoName || imageCount > 0
+  const blocks = []
+
+  if (logoPreview) {
+    blocks.push(`
+      <div style="margin-bottom:12px">
+        <p style="margin:0 0 8px;font-size:12px;font-weight:700;color:#031428">Customer Logo</p>
+        <img src="${logoPreview}" alt="Customer logo" style="display:block;max-width:240px;max-height:240px;border-radius:10px;border:1px solid #dbeafe" />
+      </div>
+    `)
+  }
+
+  imagePreviews.forEach((preview, index) => {
+    blocks.push(`
+      <div style="margin-bottom:12px">
+        <p style="margin:0 0 8px;font-size:12px;font-weight:700;color:#031428">Reference Image ${index + 1}</p>
+        <img src="${preview}" alt="Reference image ${index + 1}" style="display:block;max-width:240px;max-height:240px;border-radius:10px;border:1px solid #dbeafe" />
+      </div>
+    `)
+  })
+
+  return `<div>${blocks.join('')}</div>`
+}
+
+export function buildOrderEmailHtml(order, options = {}) {
+  const {
+    logoName,
+    imageCount = 0,
+    logoUrl,
+    imageUrls,
+    baseUrl = '',
+    logoPreview = null,
+    imagePreviews = [],
+  } = options
+
+  const hasInlineImages = logoPreview || imagePreviews.length > 0
+  const attachmentNote = hasInlineImages
+    ? [
+        logoName ? `Logo: ${escapeHtml(logoName)}` : null,
+        imageCount > 0 ? `${imageCount} reference image(s) included below` : null,
+      ]
+        .filter(Boolean)
+        .join('<br />')
+    : logoName || imageCount > 0
       ? [
           logoName ? `Logo file: ${escapeHtml(logoName)} (attached)` : null,
-          imageCount > 0 ? `${imageCount} reference image(s) attached` : null,
+          imageCount > 0 ? `${imageCount} reference image(s) attached to this email` : null,
         ]
           .filter(Boolean)
           .join('<br />')
@@ -78,6 +121,8 @@ export function buildOrderEmailHtml(order, options = {}) {
   ]
     .filter(Boolean)
     .join('<br />')
+
+  const imageGallery = renderImageGallery(logoPreview, imagePreviews)
 
   return `
 <!DOCTYPE html>
@@ -111,6 +156,7 @@ export function buildOrderEmailHtml(order, options = {}) {
             </tr>
             ${section('Attachments')}
             ${row('Uploaded Files', attachmentNote, { isHtml: true })}
+            ${hasInlineImages ? `<tr><td colspan="2" style="padding:16px;border-bottom:1px solid #e2e8f0">${imageGallery}</td></tr>` : ''}
             ${uploadedLinks ? row('File Links', uploadedLinks, { isHtml: true }) : ''}
           </table>
         </td>
@@ -127,16 +173,23 @@ export function buildOrderEmailHtml(order, options = {}) {
 }
 
 export function buildOrderEmailText(order, options = {}) {
-  const { logoName, imageCount = 0 } = options
+  const { logoName, imageCount = 0, logoPreview = null, imagePreviews = [] } = options
 
-  const attachments = logoName || imageCount > 0
+  const attachments = logoPreview || imagePreviews.length > 0
     ? [
-        logoName ? `Logo: ${logoName} (attached to this email)` : null,
-        imageCount > 0 ? `Reference images: ${imageCount} file(s) attached` : null,
+        logoName ? `Logo: ${logoName} (included in email)` : null,
+        imagePreviews.length > 0 ? `Reference images: ${imagePreviews.length} image(s) included in email` : null,
       ]
         .filter(Boolean)
         .join('\n')
-    : 'No files attached'
+    : logoName || imageCount > 0
+      ? [
+          logoName ? `Logo: ${logoName} (attached to this email)` : null,
+          imageCount > 0 ? `Reference images: ${imageCount} file(s) attached` : null,
+        ]
+          .filter(Boolean)
+        .join('\n')
+      : 'No files attached'
 
   return `
 ${'='.repeat(48)}

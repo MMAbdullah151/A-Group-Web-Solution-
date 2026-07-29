@@ -1,5 +1,6 @@
 import { SITE } from '../data/siteData'
 import { buildContactEmailHtml, buildContactEmailText, buildOrderEmailHtml, buildOrderEmailText } from './emailTemplates.js'
+import { buildFilePreviews } from './filePreviews.js'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 const FORM_SUBMIT_URL = `https://formsubmit.co/ajax/${encodeURIComponent(SITE.email)}`
@@ -28,18 +29,14 @@ async function submitHtmlEmail({ subject, replyTo, html, text, files = [] }) {
   formData.append('_template', 'box')
   formData.append('_captcha', 'false')
   formData.append('_replyto', replyTo)
-  formData.append('message', text || html)
+  formData.append('message', html || text)
 
-  files.filter(Boolean).forEach((file, index) => {
-    const label = file.name || `attachment-${index + 1}`
-    formData.append('attachment', file, label)
-  })
+  if (files.logo) {
+    formData.append('Logo', files.logo, files.logo.name)
+  }
 
-  files.filter(Boolean).forEach((file, index) => {
-    const label = file.name?.toLowerCase().includes('logo')
-      ? file.name
-      : file.name || `attachment-${index + 1}`
-    formData.append('attachment', file, label)
+  files.images.filter(Boolean).forEach((file, index) => {
+    formData.append(`Reference Image ${index + 1}`, file, file.name)
   })
 
   const res = await fetch(FORM_SUBMIT_URL, {
@@ -61,14 +58,10 @@ async function submitOrderViaApi(orderData, { logo = null, images = [] } = {}) {
   const allFiles = [logo, ...images].filter(Boolean)
 
   if (allFiles.length > 0) {
-    try {
-      const uploadResult = await uploadFiles(allFiles)
-      if (logo) payload.logoUrl = uploadResult.files[0]?.url || ''
-      if (images.length > 0) {
-        payload.imageUrls = uploadResult.files.slice(logo ? 1 : 0).map((f) => f.url)
-      }
-    } catch {
-      // Continue without uploads if the server upload endpoint is unavailable.
+    const uploadResult = await uploadFiles(allFiles)
+    if (logo) payload.logoUrl = uploadResult.files[0]?.url || ''
+    if (images.length > 0) {
+      payload.imageUrls = uploadResult.files.slice(logo ? 1 : 0).map((f) => f.url)
     }
   }
 
@@ -79,17 +72,23 @@ async function submitOrderViaApi(orderData, { logo = null, images = [] } = {}) {
 }
 
 async function submitOrderViaFormSubmit(orderData, { logo = null, images = [] } = {}) {
+  const previews = await buildFilePreviews({ logo, images })
   const templateOptions = {
     logoName: logo?.name,
     imageCount: images.length,
+    logoPreview: previews.logoPreview,
+    imagePreviews: previews.imagePreviews,
   }
+
+  const html = buildOrderEmailHtml(orderData, templateOptions)
+  const text = buildOrderEmailText(orderData, templateOptions)
 
   return submitHtmlEmail({
     subject: `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`,
     replyTo: orderData.email,
-    html: buildOrderEmailHtml(orderData, templateOptions),
-    text: buildOrderEmailText(orderData, templateOptions),
-    files: [logo, ...images],
+    html,
+    text,
+    files: { logo, images },
   })
 }
 
@@ -97,10 +96,15 @@ export async function submitOrder(orderData, fileOptions = {}) {
   const { honeypot, ...payload } = orderData
   if (honeypot) return { success: true }
 
+  const hasFiles = Boolean(fileOptions.logo || fileOptions.images?.length)
+
   try {
+    if (hasFiles) {
+      throw new Error('Use email delivery for file uploads')
+    }
     return await submitOrderViaApi(payload, fileOptions)
   } catch (err) {
-    console.warn('Server order submit failed, using email fallback:', err.message)
+    console.warn('Server order submit unavailable, using email delivery:', err.message)
     return submitOrderViaFormSubmit(payload, fileOptions)
   }
 }
@@ -121,6 +125,7 @@ export async function submitContact(formData) {
       replyTo: payload.email,
       html: buildContactEmailHtml(payload),
       text: buildContactEmailText(payload),
+      files: { logo: null, images: [] },
     })
   }
 }
