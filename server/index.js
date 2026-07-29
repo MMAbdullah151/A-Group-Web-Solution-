@@ -74,8 +74,21 @@ app.post('/api/contact', async (req, res) => {
       return res.status(400).json({ message: 'Name, email, and message are required' })
     }
 
-    const contact = await Contact.create({ name, email, phone, message })
-    await sendAdminEmail(`New Contact: ${name}`, contactEmailHtml(contact))
+    let contact = { name, email, phone, message }
+    if (mongoose.connection.readyState === 1) {
+      contact = await Contact.create({ name, email, phone, message })
+    }
+
+    const emailSent = await sendAdminEmail(
+      `New Contact: ${name}`,
+      contactEmailHtml(contact),
+      { replyTo: email }
+    )
+
+    if (mongoose.connection.readyState !== 1 && !emailSent) {
+      return res.status(500).json({ message: 'Failed to send message' })
+    }
+
     res.status(201).json({ success: true, message: 'Message sent successfully' })
   } catch (err) {
     console.error('Contact error:', err)
@@ -91,9 +104,27 @@ app.post('/api/orders', async (req, res) => {
       return res.status(400).json({ message: 'Required fields missing' })
     }
 
-    const order = await Order.create(data)
-    await sendAdminEmail(`New Order: ${data.fullName} - ${data.websiteType}`, orderEmailHtml(order))
-    res.status(201).json({ success: true, message: 'Order submitted successfully', orderId: order._id })
+    let order = data
+    if (mongoose.connection.readyState === 1) {
+      order = await Order.create(data)
+    }
+
+    const siteUrl = process.env.CLIENT_URL || 'https://www.a-group-web-solution.store'
+    const emailSent = await sendAdminEmail(
+      `New Order: ${data.fullName} - ${data.websiteType}`,
+      orderEmailHtml(order, siteUrl),
+      { replyTo: data.email }
+    )
+
+    if (mongoose.connection.readyState !== 1 && !emailSent) {
+      return res.status(500).json({ message: 'Failed to submit order. Please contact us by phone or email.' })
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Order submitted successfully',
+      orderId: order._id,
+    })
   } catch (err) {
     console.error('Order error:', err)
     res.status(500).json({ message: 'Failed to submit order' })
