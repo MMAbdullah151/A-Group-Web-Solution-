@@ -1,17 +1,16 @@
 import { SITE } from '../data/siteData'
 import {
-  buildContactEmailHtml,
   buildContactEmailText,
-  buildOrderEmailHtml,
   buildOrderEmailText,
+  buildOrderFormSubmitFields,
 } from './emailTemplates.js'
-import { buildFilePreviews, estimatePayloadSize } from './filePreviews.js'
+import { buildFilePreviews, buildPreviewAttachmentFiles } from './filePreviews.js'
+import { uploadPreviewImages } from './imageUpload.js'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 const FORM_SUBMIT_URL = `https://formsubmit.co/ajax/${encodeURIComponent(SITE.email)}`
 const WEB3FORMS_URL = 'https://api.web3forms.com/submit'
 const MAX_ATTACHMENT_BYTES = 9 * 1024 * 1024
-const MAX_HTML_PAYLOAD_BYTES = 1400000
 
 async function request(endpoint, options = {}) {
   const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -31,9 +30,8 @@ async function request(endpoint, options = {}) {
   return data
 }
 
-function getAttachmentSize(files = {}) {
-  const { logo = null, images = [] } = files
-  return [logo, ...images.filter(Boolean)].reduce((total, file) => total + (file?.size || 0), 0)
+function getAttachmentSize(files = []) {
+  return files.reduce((total, file) => total + (file?.size || 0), 0)
 }
 
 async function submitFormSubmitEmail({
@@ -41,16 +39,12 @@ async function submitFormSubmitEmail({
   replyTo,
   message,
   fields = {},
-  files = {},
-  isHtml = false,
+  attachments = [],
 }) {
   const formData = new FormData()
   formData.append('_subject', subject)
+  formData.append('_template', 'box')
   formData.append('_captcha', 'false')
-
-  if (!isHtml) {
-    formData.append('_template', 'box')
-  }
 
   if (replyTo) {
     formData.append('_replyto', replyTo)
@@ -58,24 +52,17 @@ async function submitFormSubmitEmail({
 
   formData.append('message', message)
 
-  if (!isHtml) {
-    Object.entries(fields).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        formData.append(key, Array.isArray(value) ? value.join(', ') : String(value))
-      }
-    })
-  }
-
-  const { logo = null, images = [] } = files
-  const attachmentSize = getAttachmentSize(files)
-
-  if (!isHtml && attachmentSize > 0 && attachmentSize <= MAX_ATTACHMENT_BYTES) {
-    if (logo) {
-      formData.append('attachment', logo, logo.name || 'logo')
+  Object.entries(fields).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      formData.append(key, Array.isArray(value) ? value.join(', ') : String(value))
     }
+  })
 
-    images.filter(Boolean).forEach((file, index) => {
-      formData.append('attachment', file, file.name || `image-${index + 1}`)
+  const attachmentSize = getAttachmentSize(attachments)
+
+  if (attachmentSize > 0 && attachmentSize <= MAX_ATTACHMENT_BYTES) {
+    attachments.forEach((file) => {
+      formData.append('attachment', file, file.name)
     })
   }
 
@@ -120,22 +107,7 @@ async function submitOrderViaApi(orderData, { logo = null, images = [] } = {}) {
   })
 }
 
-function buildOrderFields(orderData) {
-  return {
-    'Full Name': orderData.fullName,
-    Company: orderData.companyName,
-    Email: orderData.email,
-    Phone: orderData.phone,
-    WhatsApp: orderData.whatsapp,
-    'Business Type': orderData.businessType,
-    'Website Type': orderData.websiteType,
-    Budget: orderData.budget,
-    Features: orderData.requiredFeatures,
-    Description: orderData.projectDescription,
-  }
-}
-
-async function submitViaWeb3Forms(accessKey, orderData, html) {
+async function submitViaWeb3Forms(accessKey, orderData, { message, fields, attachments }) {
   const formData = new FormData()
   formData.append('access_key', accessKey)
   formData.append('subject', `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`)
@@ -143,7 +115,17 @@ async function submitViaWeb3Forms(accessKey, orderData, html) {
   formData.append('name', orderData.fullName)
   formData.append('email', orderData.email)
   formData.append('replyto', orderData.email)
-  formData.append('message', html)
+  formData.append('message', message)
+
+  Object.entries(fields).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      formData.append(key, Array.isArray(value) ? value.join(', ') : String(value))
+    }
+  })
+
+  attachments.forEach((file) => {
+    formData.append('attachment', file, file.name)
+  })
 
   const res = await fetch(WEB3FORMS_URL, {
     method: 'POST',
@@ -162,68 +144,72 @@ async function submitViaWeb3Forms(accessKey, orderData, html) {
 
 async function submitOrderViaFormSubmit(orderData, { logo = null, images = [] } = {}) {
   const previews = await buildFilePreviews({ logo, images })
-  const templateOptions = {
-    logoName: logo?.name,
-    imageCount: images.length,
+  const uploadLinks = await uploadPreviewImages({
+    logo,
+    images,
     logoPreview: previews.logoPreview,
     imagePreviews: previews.imagePreviews,
-  }
+  }).catch(() => ({ logoUrl: null, imageUrls: [] }))
+
+  const fields = buildOrderFormSubmitFields(orderData, {
+    logo,
+    images,
+    logoUrl: uploadLinks.logoUrl,
+    imageUrls: uploadLinks.imageUrls,
+  })
+
+  const attachments = buildPreviewAttachmentFiles({
+    logo,
+    images,
+    logoPreview: previews.logoPreview,
+    imagePreviews: previews.imagePreviews,
+  })
 
   const subject = `New Website Order | ${orderData.fullName} | ${orderData.websiteType}`
-  const fields = buildOrderFields(orderData)
-  const files = { logo, images }
-  const attachmentSize = getAttachmentSize(files)
+  const message = `New website order from ${orderData.fullName}. Customer details are listed below. Open the attached preview files or preview links to view uploaded images.`
   const web3Key = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY
+  const payload = { message, fields, attachments }
 
-  if (attachmentSize > MAX_ATTACHMENT_BYTES) {
-    const oversizeMessage = `${buildOrderEmailText(orderData, templateOptions)}\n\nATTACHMENT NOTE:\nCustomer selected files totaling ${(attachmentSize / (1024 * 1024)).toFixed(1)}MB, which is too large to email. Please contact the customer to request the files directly.`
+  if (getAttachmentSize(attachments) > MAX_ATTACHMENT_BYTES) {
     return submitFormSubmitEmail({
       subject,
       replyTo: orderData.email,
-      message: oversizeMessage,
+      message: `${message}\n\nNote: Uploaded files were too large to attach. Please contact the customer for the original files.`,
       fields,
-      files: { logo: null, images: [] },
+      attachments: [],
     })
   }
 
-  const html = buildOrderEmailHtml(orderData, templateOptions)
-  const htmlSize = estimatePayloadSize(html)
-
   if (web3Key) {
     try {
-      return await submitViaWeb3Forms(web3Key, orderData, html)
+      return await submitViaWeb3Forms(web3Key, orderData, payload)
     } catch (err) {
       console.warn('Web3Forms order email failed, falling back to FormSubmit:', err.message)
     }
   }
 
-  if (htmlSize <= MAX_HTML_PAYLOAD_BYTES) {
-    try {
-      return await submitFormSubmitEmail({
-        subject,
-        replyTo: orderData.email,
-        message: html,
-        isHtml: true,
-      })
-    } catch (err) {
-      console.warn('HTML order email failed, retrying as plain text:', err.message)
-    }
+  try {
+    return await submitFormSubmitEmail({
+      subject,
+      replyTo: orderData.email,
+      ...payload,
+    })
+  } catch (err) {
+    console.warn('Order email with attachments failed, retrying without files:', err.message)
+
+    const fallbackMessage = `${buildOrderEmailText(orderData, {
+      logoName: logo?.name,
+      imageCount: images.length,
+    })}\n\nNote: Image attachments could not be sent. Please contact the customer for uploaded files.`
+
+    return submitFormSubmitEmail({
+      subject,
+      replyTo: orderData.email,
+      message: fallbackMessage,
+      fields,
+      attachments: [],
+    })
   }
-
-  const fallbackMessage = `${buildOrderEmailText(orderData, templateOptions)}\n\nATTACHMENT NOTE:\nImage previews could not be embedded. The customer uploaded ${[
-    logo?.name ? `Logo: ${logo.name}` : null,
-    ...images.map((file, index) => `Image ${index + 1}: ${file.name}`),
-  ]
-    .filter(Boolean)
-    .join('\n')}\n\nPlease contact the customer to receive these files directly.`
-
-  return submitFormSubmitEmail({
-    subject,
-    replyTo: orderData.email,
-    message: fallbackMessage,
-    fields,
-    files: { logo: null, images: [] },
-  })
 }
 
 export async function submitOrder(orderData, fileOptions = {}) {
@@ -252,7 +238,7 @@ export async function submitContact(formData) {
     return submitFormSubmitEmail({
       subject: `New Contact Message | ${payload.name}`,
       replyTo: payload.email,
-      message: buildContactEmailText(payload),
+      message: `New contact message from ${payload.name}. Details are listed below.`,
       fields: {
         Name: payload.name,
         Email: payload.email,

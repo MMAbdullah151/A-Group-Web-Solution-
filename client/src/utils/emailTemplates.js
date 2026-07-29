@@ -82,6 +82,51 @@ function renderImageGallery(logoPreview, imagePreviews = []) {
   return `<div>${blocks.join('')}</div>`
 }
 
+export function buildOrderFormSubmitFields(order, options = {}) {
+  const {
+    logo = null,
+    images = [],
+    logoUrl = null,
+    imageUrls = [],
+  } = options
+
+  const fields = {
+    'Customer Information': '------------------------------',
+    'Full Name': plain(order.fullName),
+    'Company Name': plain(order.companyName),
+    Email: plain(order.email),
+    Phone: plain(order.phone),
+    WhatsApp: plain(order.whatsapp),
+    'Project Details': '------------------------------',
+    'Business Type': plain(order.businessType),
+    'Website Type': plain(order.websiteType),
+    Budget: plain(order.budget),
+    'Required Features': order.requiredFeatures?.length
+      ? order.requiredFeatures.join(', ')
+      : 'None selected',
+    'Project Description': plain(order.projectDescription),
+    'Uploaded Images': '------------------------------',
+  }
+
+  if (logo) {
+    fields['Logo File Name'] = logo.name
+    fields['Logo Preview Link'] = logoUrl || 'See attached preview file'
+  } else {
+    fields['Logo File Name'] = 'None uploaded'
+  }
+
+  if (images.length > 0) {
+    images.forEach((file, index) => {
+      fields[`Reference Image ${index + 1} Name`] = file.name
+      fields[`Reference Image ${index + 1} Link`] = imageUrls[index] || 'See attached preview file'
+    })
+  } else {
+    fields['Reference Images'] = 'None uploaded'
+  }
+
+  return fields
+}
+
 export function buildOrderEmailHtml(order, options = {}) {
   const {
     logoName,

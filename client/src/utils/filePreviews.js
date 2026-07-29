@@ -91,3 +91,32 @@ export async function buildFilePreviews({ logo = null, images = [] } = {}) {
 export function estimatePayloadSize(value) {
   return new Blob([value]).size
 }
+
+export function dataUrlToFile(dataUrl, filename) {
+  const [header, base64] = dataUrl.split(',')
+  const mime = header.match(/:(.*?);/)?.[1] || 'image/jpeg'
+  const binary = atob(base64)
+  const bytes = new Uint8Array(binary.length)
+
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+
+  return new File([bytes], filename, { type: mime })
+}
+
+export function buildPreviewAttachmentFiles({ logo, images, logoPreview, imagePreviews }) {
+  const attachments = []
+
+  if (logoPreview) {
+    const baseName = logo?.name?.replace(/\.[^.]+$/, '') || 'customer-logo'
+    attachments.push(dataUrlToFile(logoPreview, `${baseName}-preview.jpg`))
+  }
+
+  imagePreviews.forEach((preview, index) => {
+    const baseName = images[index]?.name?.replace(/\.[^.]+$/, '') || `reference-image-${index + 1}`
+    attachments.push(dataUrlToFile(preview, `${baseName}-preview.jpg`))
+  })
+
+  return attachments
+}
